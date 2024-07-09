@@ -3,7 +3,7 @@
 [![Docker pulls)](https://img.shields.io/docker/pulls/cherts/ocserv.svg)](https://hub.docker.com/r/cherts/ocserv)
 ![LICENSE](https://img.shields.io/github/license/cherts/ocserv_docker)
 
-ocerv_docker is an OpenConnect VPN Server boxed in a Docker image built by [mailto:sleuthhound@gmail.com](Mikhail Grigorev)
+ocerv_docker is an OpenConnect VPN Server boxed in a Docker image built by [Mikhail Grigorev](mailto:sleuthhound@gmail.com)
 
 ## What is OpenConnect server?
 
