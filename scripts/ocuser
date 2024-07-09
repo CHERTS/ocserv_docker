@@ -1,0 +1,36 @@
+#!/bin/ash
+
+CONF_DIR=${HC_WORKDIR:-"/etc/ocserv"}
+MODE=${1}
+USER=${2}
+
+if [ -z "$USER" ]; then
+	echo "ERROR: Use $0 <create|delete|lock|unlock> <username>"
+	exit 1;
+fi
+
+case "$MODE" in
+	"create")
+		FLAG='';
+		;;
+    "delete")
+        FLAG='-d';
+        ;;
+	"lock")
+		FLAG='-l';
+		;;
+	"unlock")
+		FLAG='-u';
+		;;
+	*)
+		echo "ERROR: Use $0 <create|delete|lock|unlock> <username>"
+		exit 1
+		;;
+esac
+
+if [ -f "${CONF_DIR}/ocpasswd" ]; then
+	ocpasswd -c "${CONF_DIR}/ocpasswd" ${FLAG} ${USER}
+else
+	echo "ERROR: Password file '${CONF_DIR}/ocpasswd' not found."
+	exit 1
+fi
