@@ -1,0 +1,22 @@
+services:
+  ocserv:
+    image: cherts/ocserv:latest
+    restart: always
+    container_name: ocserv
+    privileged: true
+    hostname: vpn.myorg.com
+    ports:
+      - 443:443/udp
+      - 443:443/tcp
+    volumes:
+      - type: bind
+        source: ${PWD}/ocpasswd
+        target: /etc/ocserv/ocpasswd
+    environment:
+      - CA_CN=My CA
+      - CA_ORG=My Corp
+      - CA_DAYS=3650
+      - SRV_CN=vpn.myorg.com
+      - SRV_ORG=My Org
+      - SRV_DAYS=365
+      - NO_TEST_USER=1

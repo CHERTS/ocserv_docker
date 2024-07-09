@@ -13,9 +13,9 @@ case "$MODE" in
 	"create")
 		FLAG='';
 		;;
-    "delete")
-        FLAG='-d';
-        ;;
+	"delete")
+		FLAG='-d';
+		;;
 	"lock")
 		FLAG='-l';
 		;;

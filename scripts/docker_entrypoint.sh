@@ -70,10 +70,10 @@ if [ ! -f "${CONF_DIR}/server-key.pem" ] || [ ! -f "${CONF_DIR}/server-cert.pem"
 fi
 
 # Create a test user
-if [ -z "$NO_TEST_USER" ] && [ ! -f "${CONF_DIR}/ocpasswd" ]; then
+if [ -z "${NO_TEST_USER}" ] && [ ! -f "${CONF_DIR}/ocpasswd" ]; then
 	TEST_PASSWORD=$(pwgen -c 10 -n 1 2>/dev/null)
 	if [ -n "${TEST_PASSWORD}" ]; then
-		echo -n ${TEST_PASSWORD} | ocpasswd -c "${CONF_DIR}/ocpasswd" test
+		echo -n "${TEST_PASSWORD}" | ocpasswd -c "${CONF_DIR}/ocpasswd" test
 		echo "Creating test user 'test' with password '${TEST_PASSWORD}'"
 	else
 		echo "Creating test user 'test' with password 'test'"

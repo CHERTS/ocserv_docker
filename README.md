@@ -3,13 +3,17 @@
 [![Docker pulls)](https://img.shields.io/docker/pulls/cherts/ocserv.svg)](https://hub.docker.com/r/cherts/ocserv)
 ![LICENSE](https://img.shields.io/github/license/cherts/ocserv_docker)
 
-ocerv_docker is an OpenConnect VPN Server boxed in a Docker image built by Mikhail Grigorev
+ocerv_docker is an OpenConnect VPN Server boxed in a Docker image built by [mailto:sleuthhound@gmail.com](Mikhail Grigorev)
 
 ## What is OpenConnect server?
 
-[OpenConnect server (ocserv)](http://www.infradead.org/ocserv/) is an SSL VPN server. It implements the OpenConnect SSL VPN protocol, and has also (currently experimental) compatibility with clients using the [AnyConnect SSL VPN](http://www.cisco.com/c/en/us/support/security/anyconnect-vpn-client/tsd-products-support-series-home.html) protocol.
+OpenConnect VPN server is an SSL VPN server that is secure, small, fast and configurable. It implements the OpenConnect SSL VPN protocol and has also (currently experimental) compatibility with clients using the AnyConnect SSL VPN protocol. The OpenConnect protocol provides a dual TCP/UDP VPN channel and uses the standard IETF security protocols to secure it. The OpenConnect client is multi-platform and available [here](https://www.infradead.org/openconnect/). Alternatively, you can try connecting using the official Cisco AnyConnect client (Confirmed working with AnyConnect 4.802045).
 
-## How is this build different from others?
+- [Homepage](https://www.infradead.org/openconnect/)
+- [Documentation](https://ocserv.openconnect-vpn.net/ocserv.8.html)
+- [Source](https://gitlab.com/openconnect/ocserv)
+
+## How is this image different from others?
 
 - Uses the latest version of OpenConnect (v1.3.0);
 - Strong SSL/TLS ciphers are used (see tls-priorities options);
@@ -70,7 +74,7 @@ The default values of the above environment variables:
 
 ### Running examples
 
-1. Start an instance out of the box with username `test` and random password:
+1. Start an instance out of the box with username `test` and random password
 
 ```bash
 docker run -ti -d --rm --name ocserv \
@@ -92,22 +96,22 @@ docker logs ocserv | grep "Creating test user"
 docker run -ti -d --rm --name ocserv \
     --privileged \
     -p 443:443 -p 443:443/udp \
-	-e SRV_CN=vpn.myorg.com \
-	-e SRV_ORG="My Org" \
-	-e SRV_DAYS=365 \
-	cherts/ocserv:latest
+    -e SRV_CN=vpn.myorg.com \
+    -e SRV_ORG="My Org" \
+    -e SRV_DAYS=365 \
+    cherts/ocserv:latest
 ```
 
 3. Start an instance with CA name `My CA`, `My Corp` and `3650` days
 
 ```bash
 docker run -ti -d --rm --name ocserv \
-	--privileged \
-	-p 443:443 -p 443:443/udp \
-	-e CA_CN="My CA" \
-	-e CA_ORG="My Corp" \
-	-e CA_DAYS=3650 \
-	cherts/ocserv:latest
+    --privileged \
+    -p 443:443 -p 443:443/udp \
+    -e CA_CN="My CA" \
+    -e CA_ORG="My Corp" \
+    -e CA_DAYS=3650 \
+    cherts/ocserv:latest
 ```
 
 A totally customized instance with both CA and server certification
@@ -143,6 +147,16 @@ docker run -ti -d --rm --name ocserv \
 ```
 
 **WARNING:** The ocserv requires the ocpasswd file to start, if `NO_TEST_USER=1` is provided, there will be no ocpasswd created, which will stop the container immediately after start it. You must specific a ocpasswd file pointed to `/etc/ocserv/ocpasswd` by using the volume argument `-v` by docker as demonstrated above.
+
+5. Start an instance as above but use docker compose
+
+```bash
+mkdir ~/ocserv; cd ~/ocserv
+curl -s -L https://raw.githubusercontent.com/CHERTS/ocserv_docker/master/deploy/docker-compose.yaml -o docker-compose.yaml
+curl -s -L https://raw.githubusercontent.com/CHERTS/ocserv_docker/master/deploy/ocpasswd -o ocpasswd
+-- Edit file docker-compose.yaml and ocpasswd after downloaads
+docker-compose up -d
+```
 
 ### User operations
 
