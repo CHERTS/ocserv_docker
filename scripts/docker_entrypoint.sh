@@ -4,6 +4,9 @@ CONF_DIR=${HC_WORKDIR:-"/etc/ocserv"}
 TCP_PORT=${HC_TCP_PORT:-"443"}
 UDP_PORT=${HC_UDP_PORT:-"443"}
 OTHER_OPTS=${HC_OTHER_OPTS:-""}
+NO_CREATE_DH_PARAMS=${HC_NO_CREATE_DH_PARAMS:-""}
+NO_CREATE_SERVER_CERT=${HC_NO_CREATE_SERVER_CERT:-""}
+NO_TEST_USER=${HC_NO_TEST_USER:-""}
 
 echo "$(date) [info] The directory with the configuration '${CONF_DIR}' will be used."
 
@@ -16,7 +19,7 @@ if [ -z "${NO_CREATE_DH_PARAMS}" ] && [ ! -f "${CONF_DIR}/dh.pem" ]; then
 	echo "$(date) [info] Generating DH params file..."
 	certtool --generate-dh-params --outfile "${CONF_DIR}/dh.pem" >/dev/null 2>&1
 else
-	echo "$(date) [info] Using existing custom DH params file"
+	echo "$(date) [info] Using existing custom DH params file."
 fi
 
 if [ -z "${NO_CREATE_SERVER_CERT}" ]; then
@@ -74,7 +77,7 @@ if [ -z "${NO_CREATE_SERVER_CERT}" ]; then
 		echo "$(date) [info] Using existing certificates in '${CONF_DIR}'"
 	fi
 else
-	echo "$(date) [info] Using existing custom certificates"
+	echo "$(date) [info] Using existing custom certificates."
 fi
 
 # Create a test user

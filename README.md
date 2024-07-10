@@ -59,11 +59,11 @@ All the variables to this image is optional, which means you don't have to type 
 
 `SRV_DAYS`, this is the expiration days used to generate the server certification.
 
-`NO_TEST_USER`, while this variable is set to not empty, the `test` user will not be created. You have to create your own user with password. The default value is to create `test` user with random password.
+`HC_NO_TEST_USER`, while this variable is set to not empty, the `test` user will not be created. You have to create your own user with password. The default value is to create `test` user with random password.
 
-`NO_CREATE_DH_PARAMS`, while this variable is set to not empty, the DH params file will not be created. You have to create your own DH params file and set path to file into config ocserv (dh-params option). The default value is to generate DH params file automaticaly if not exist.
+`HC_NO_CREATE_DH_PARAMS`, while this variable is set to not empty, the DH params file will not be created. You have to create your own DH params file and set path to file into config ocserv (dh-params option). The default value is to generate DH params file automaticaly if not exist.
 
-`NO_CREATE_SERVER_CERT`, while this variable is set to not empty, the server certificate file will not be created. You have to create your own server certificate file and set path to file into config ocserv (server-cert and server-key option). The default value is to generate server certificate file automaticaly if not exist.
+`HC_NO_CREATE_SERVER_CERT`, while this variable is set to not empty, the server certificate file will not be created. You have to create your own server certificate file and set path to file into config ocserv (server-cert and server-key option). The default value is to generate server certificate file automaticaly if not exist.
 
 The default values of the above environment variables:
 
@@ -145,12 +145,12 @@ docker run -ti -d --rm --name ocserv \
     -e SRV_CN=vpn.myorg.com \
     -e SRV_ORG="My Org" \
     -e SRV_DAYS=365 \
-    -e NO_TEST_USER=1 \
+    -e HC_NO_TEST_USER=1 \
     -v /some/path/to/ocpasswd:/etc/ocserv/ocpasswd \
     cherts/ocserv:latest
 ```
 
-**WARNING:** The ocserv requires the ocpasswd file to start, if `NO_TEST_USER=1` is provided, there will be no ocpasswd created, which will stop the container immediately after start it. You must specific a ocpasswd file pointed to `/etc/ocserv/ocpasswd` by using the volume argument `-v` by docker as demonstrated above.
+**WARNING:** The ocserv requires the ocpasswd file to start, if `HC_NO_TEST_USER=1` is provided, there will be no ocpasswd created, which will stop the container immediately after start it. You must specific a ocpasswd file pointed to `/etc/ocserv/ocpasswd` by using the volume argument `-v` by docker as demonstrated above.
 
 #### Start an instance as above but use docker compose
 
@@ -186,7 +186,7 @@ Delete user is similar to add user, just add another argument `-d` to the comman
 docker exec -ti ocserv ocpasswd -c /etc/ocserv/ocpasswd -d test
 ```
 
-The above command will delete the default user `test`, if you start the instance without using environment variable `NO_TEST_USER`.
+The above command will delete the default user `test`, if you start the instance without using environment variable `HC_NO_TEST_USER`.
 
 #### Change password
 

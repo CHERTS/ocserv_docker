@@ -19,9 +19,9 @@ services:
       - SRV_CN=vpn.myorg.com
       - SRV_ORG=My Org
       - SRV_DAYS=365
-      - NO_TEST_USER=1
-#      - NO_CREATE_DH_PARAMS=1
-#      - NO_CREATE_SERVER_CERT=1
+      - HC_NO_TEST_USER=1
+#      - HC_NO_CREATE_DH_PARAMS=1
+#      - HC_NO_CREATE_SERVER_CERT=1
 #      - HC_OTHER_OPTS=-d 9
 #      - HC_TCP_PORT=8443
 #      - HC_UDP_PORT=8443
