@@ -41,4 +41,4 @@ jobs:
           docker image inspect cherts/ocserv:${{ env.HC_VERSION }}
       - name: Test image cherts/ocserv:${{ env.HC_VERSION }}
         run: |
-          docker run --rm --name ocserv cherts/ocserv:${{ env.HC_VERSION }} --version
+          docker run --rm -e HC_OTHER_OPTS=--version --name ocserv cherts/ocserv:${{ env.HC_VERSION }}

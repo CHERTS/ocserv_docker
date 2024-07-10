@@ -88,4 +88,3 @@ EXPOSE $HC_TCP_PORT/tcp
 EXPOSE $HC_UDP_PORT/udp
 
 ENTRYPOINT ["/bin/docker_entrypoint.sh"]
-CMD ["-f"]

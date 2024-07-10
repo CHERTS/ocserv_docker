@@ -110,10 +110,10 @@ fi
 
 # Run server
 if [ -f "${CONF_DIR}/ocserv.conf" ]; then
-	echo "$(date) [info] Starting server using options '-c ${CONF_DIR}/ocserv.conf ${OTHER_OPTS} $@'..."
-	exec ocserv -c "${CONF_DIR}/ocserv.conf" ${OTHER_OPTS} $@;
+	echo "$(date) [info] Starting server using options '-c ${CONF_DIR}/ocserv.conf -f ${OTHER_OPTS}'..."
+	exec ocserv -c "${CONF_DIR}/ocserv.conf" -f ${OTHER_OPTS};
 else
 	echo "$(date) [warning] Configuration file '${CONF_DIR}/ocserv.conf' not found."
-	echo "$(date) [info] Starting server using options '-c /etc/ocserv.default.conf ${OTHER_OPTS} $@'..."
-	exec ocserv -c "/etc/ocserv.default.conf" ${OTHER_OPTS} $@;
+	echo "$(date) [info] Starting server using options '-c /etc/ocserv.default.conf -f ${OTHER_OPTS}'..."
+	exec ocserv -c "/etc/ocserv.default.conf" -f ${OTHER_OPTS};
 fi
