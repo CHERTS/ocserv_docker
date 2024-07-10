@@ -80,7 +80,7 @@ The default values of the above environment variables:
 docker run -ti -d --rm --name ocserv \
     --privileged \
     -p 443:443 -p 443:443/udp \
-    cherts/ocserv:latest                                                                                                                                               
+    cherts/ocserv:latest                                                                                                                                            
 ```
 
 This will start an instance with the a test user named `test` and generated random password.
