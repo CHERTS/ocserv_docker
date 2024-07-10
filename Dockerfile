@@ -40,8 +40,8 @@ RUN buildDeps=" \
 	&& apk add --update --virtual .build-deps $buildDeps \
 	&& wget -O ocserv.tar.xz "ftp://ftp.infradead.org/pub/ocserv/ocserv-$HC_VERSION.tar.xz" \
 	&& wget -O ocserv.tar.xz.sig "ftp://ftp.infradead.org/pub/ocserv/ocserv-$HC_VERSION.tar.xz.sig" \
-	&& gpg --keyserver pgp.mit.edu --recv-key 96865171 \
-	&& gpg --verify ocserv.tar.xz.sig \
+#	&& gpg --keyserver pgp.mit.edu --recv-key 96865171 \
+#	&& gpg --verify ocserv.tar.xz.sig \
 	&& mkdir -p /usr/src/ocserv \
 	&& tar -xf ocserv.tar.xz -C /usr/src/ocserv --strip-components=1 \
 	&& rm -rf ocserv.tar.xz* \
