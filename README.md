@@ -74,7 +74,7 @@ The default values of the above environment variables:
 
 ### Running examples
 
-1. Start an instance out of the box with username `test` and random password
+#### Start an instance out of the box with username `test` and random password
 
 ```bash
 docker run -ti -d --rm --name ocserv \
@@ -90,7 +90,7 @@ To view the generated password, run the command:
 docker logs ocserv | grep "Creating test user"
 ```
 
-2. Start an instance with server name `vpn.myorg.com`, `My Org` and `365` days
+#### Start an instance with server name `vpn.myorg.com`, `My Org` and `365` days
 
 ```bash
 docker run -ti -d --rm --name ocserv \
@@ -102,7 +102,7 @@ docker run -ti -d --rm --name ocserv \
     cherts/ocserv:latest
 ```
 
-3. Start an instance with CA name `My CA`, `My Corp` and `3650` days
+#### Start an instance with CA name `My CA`, `My Corp` and `3650` days
 
 ```bash
 docker run -ti -d --rm --name ocserv \
@@ -129,7 +129,7 @@ docker run -ti -d --rm --name ocserv \
     cherts/ocserv:latest
 ```
 
-4. Start an instance as above but without test user
+#### Start an instance as above but without test user
 
 ```bash
 docker run -ti -d --rm --name ocserv \
@@ -148,7 +148,7 @@ docker run -ti -d --rm --name ocserv \
 
 **WARNING:** The ocserv requires the ocpasswd file to start, if `NO_TEST_USER=1` is provided, there will be no ocpasswd created, which will stop the container immediately after start it. You must specific a ocpasswd file pointed to `/etc/ocserv/ocpasswd` by using the volume argument `-v` by docker as demonstrated above.
 
-5. Start an instance as above but use docker compose
+#### Start an instance as above but use docker compose
 
 ```bash
 mkdir ~/ocserv; cd ~/ocserv
