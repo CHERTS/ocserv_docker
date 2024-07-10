@@ -64,6 +64,7 @@ RUN buildDeps=" \
 	&& ocserv --version
 
 COPY config/ocserv.conf $HC_WORKDIR/ocserv.conf
+COPY config/ocserv.conf /etc/ocserv.default.conf
 COPY scripts/docker_entrypoint.sh /bin
 COPY scripts/ocuser /usr/local/sbin/ocuser
 RUN set -x \

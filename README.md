@@ -61,6 +61,10 @@ All the variables to this image is optional, which means you don't have to type 
 
 `NO_TEST_USER`, while this variable is set to not empty, the `test` user will not be created. You have to create your own user with password. The default value is to create `test` user with random password.
 
+`NO_CREATE_DH_PARAMS`, while this variable is set to not empty, the DH params file will not be created. You have to create your own DH params file and set path to file into config ocserv (dh-params option). The default value is to generate DH params file automaticaly if not exist.
+
+`NO_CREATE_SERVER_CERT`, while this variable is set to not empty, the server certificate file will not be created. You have to create your own server certificate file and set path to file into config ocserv (server-cert and server-key option). The default value is to generate server certificate file automaticaly if not exist.
+
 The default values of the above environment variables:
 
 |   Variable   |     Default     |

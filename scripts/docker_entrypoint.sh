@@ -8,71 +8,73 @@ OTHER_OPTS=${HC_OTHER_OPTS:-""}
 echo "$(date) [info] The directory with the configuration '${CONF_DIR}' will be used."
 
 if [ ! -d "${CONF_DIR}" ]; then
+	echo "$(date) [info] Creating config directory '${CONF_DIR}'..."
 	mkdir "${CONF_DIR}" >/dev/null 2>&1
 fi
 
-if [ ! -f "${CONF_DIR}/dh.pem" ]; then
+if [ -z "${NO_CREATE_DH_PARAMS}" ] && [ ! -f "${CONF_DIR}/dh.pem" ]; then
 	echo "$(date) [info] Generating DH params file..."
 	certtool --generate-dh-params --outfile "${CONF_DIR}/dh.pem" >/dev/null 2>&1
+else
+	echo "$(date) [info] Using existing custom DH params file"
 fi
 
-if [ ! -f "${CONF_DIR}/server-key.pem" ] || [ ! -f "${CONF_DIR}/server-cert.pem" ]; then
-	echo "$(date) [info] No certificates were found, creating them from provided or default values"
-	# Check environment variables
-	if [ -z "$CA_CN" ]; then
-		CA_CN="VPN CA"
+if [ -z "${NO_CREATE_SERVER_CERT}" ]; then
+	if [ ! -f "${CONF_DIR}/server-key.pem" ] || [ ! -f "${CONF_DIR}/server-cert.pem" ]; then
+		echo "$(date) [info] No certificates were found, creating them from provided or default values"
+		# Check environment variables
+		if [ -z "$CA_CN" ]; then
+			CA_CN="VPN CA"
+		fi
+		if [ -z "$CA_ORG" ]; then
+			CA_ORG="My Organization"
+		fi
+		if [ -z "$CA_DAYS" ]; then
+			CA_DAYS=9999
+		fi
+		if [ -z "$SRV_CN" ]; then
+			SRV_CN="www.example.com"
+		fi
+		if [ -z "$SRV_ORG" ]; then
+			SRV_ORG="My Company"
+		fi
+		if [ -z "$SRV_DAYS" ]; then
+			SRV_DAYS=9999
+		fi
+		echo "$(date) [info] Generating CA private key..."
+		# No certification found, generate one
+		certtool --generate-privkey --outfile "${CONF_DIR}/ca-key.pem" >/dev/null 2>&1
+		cat > "${CONF_DIR}/ca.tmpl" <<-EOCA
+		cn = "$CA_CN"
+		organization = "$CA_ORG"
+		serial = 1
+		expiration_days = $CA_DAYS
+		ca
+		signing_key
+		cert_signing_key
+		crl_signing_key
+		EOCA
+		echo "$(date) [info] Generating CA self signed certificate..."
+		certtool --generate-self-signed --load-privkey "${CONF_DIR}/ca-key.pem" --template "${CONF_DIR}/ca.tmpl" --outfile "${CONF_DIR}/ca.pem" >/dev/null 2>&1
+		echo "$(date) [info] Generating server private key..."
+		certtool --generate-privkey --outfile "${CONF_DIR}/server-key.pem" >/dev/null 2>&1
+		cat > "${CONF_DIR}/server.tmpl" <<-EOSRV
+		cn = "$SRV_CN"
+		organization = "$SRV_ORG"
+		expiration_days = $SRV_DAYS
+		signing_key
+		encryption_key
+		tls_www_server
+		EOSRV
+		echo "$(date) [info] Generating server self signed certificate..."
+		certtool --generate-certificate --load-privkey "${CONF_DIR}/server-key.pem" --load-ca-certificate "${CONF_DIR}/ca.pem" --load-ca-privkey "${CONF_DIR}/ca-key.pem" --template "${CONF_DIR}/server.tmpl" --outfile "${CONF_DIR}/server-cert.pem" >/dev/null 2>&1
+		rm -rf "${CONF_DIR}/ca.tmpl" >/dev/null 2>&1
+		rm -rf "${CONF_DIR}/server.tmpl" >/dev/null 2>&1
+	else
+		echo "$(date) [info] Using existing certificates in '${CONF_DIR}'"
 	fi
-
-	if [ -z "$CA_ORG" ]; then
-		CA_ORG="My Organization"
-	fi
-
-	if [ -z "$CA_DAYS" ]; then
-		CA_DAYS=9999
-	fi
-
-	if [ -z "$SRV_CN" ]; then
-		SRV_CN="www.example.com"
-	fi
-
-	if [ -z "$SRV_ORG" ]; then
-		SRV_ORG="My Company"
-	fi
-
-	if [ -z "$SRV_DAYS" ]; then
-		SRV_DAYS=9999
-	fi
-	echo "$(date) [info] Generating CA private key..."
-	# No certification found, generate one
-	certtool --generate-privkey --outfile "${CONF_DIR}/ca-key.pem" >/dev/null 2>&1
-	cat > "${CONF_DIR}/ca.tmpl" <<-EOCA
-	cn = "$CA_CN"
-	organization = "$CA_ORG"
-	serial = 1
-	expiration_days = $CA_DAYS
-	ca
-	signing_key
-	cert_signing_key
-	crl_signing_key
-	EOCA
-	echo "$(date) [info] Generating CA self signed certificate..."
-	certtool --generate-self-signed --load-privkey "${CONF_DIR}/ca-key.pem" --template "${CONF_DIR}/ca.tmpl" --outfile "${CONF_DIR}/ca.pem" >/dev/null 2>&1
-	echo "$(date) [info] Generating server private key..."
-	certtool --generate-privkey --outfile "${CONF_DIR}/server-key.pem" >/dev/null 2>&1
-	cat > "${CONF_DIR}/server.tmpl" <<-EOSRV
-	cn = "$SRV_CN"
-	organization = "$SRV_ORG"
-	expiration_days = $SRV_DAYS
-	signing_key
-	encryption_key
-	tls_www_server
-	EOSRV
-	echo "$(date) [info] Generating server self signed certificate..."
-	certtool --generate-certificate --load-privkey "${CONF_DIR}/server-key.pem" --load-ca-certificate "${CONF_DIR}/ca.pem" --load-ca-privkey "${CONF_DIR}/ca-key.pem" --template "${CONF_DIR}/server.tmpl" --outfile "${CONF_DIR}/server-cert.pem" >/dev/null 2>&1
-	rm -rf "${CONF_DIR}/ca.tmpl" >/dev/null 2>&1
-	rm -rf "${CONF_DIR}/server.tmpl" >/dev/null 2>&1
 else
-	echo "$(date) [info] Using existing certificates in '${CONF_DIR}'"
+	echo "$(date) [info] Using existing custom certificates"
 fi
 
 # Create a test user
@@ -104,5 +106,11 @@ if ! `test -c /dev/net/tun`; then
 fi
 
 # Run server
-echo "$(date) [info] Starting server using options '-c ${CONF_DIR}/ocserv.conf ${OTHER_OPTS} $@'..."
-exec ocserv -c "${CONF_DIR}/ocserv.conf" "${OTHER_OPTS}" "$@";
+if [ -f "${CONF_DIR}/ocserv.conf" ]; then
+	echo "$(date) [info] Starting server using options '-c ${CONF_DIR}/ocserv.conf ${OTHER_OPTS} $@'..."
+	exec ocserv -c "${CONF_DIR}/ocserv.conf" "${OTHER_OPTS}" "$@";
+else
+	echo "$(date) [warning] Configuration file '${CONF_DIR}/ocserv.conf' not found."
+	echo "$(date) [info] Starting server using options '-c /etc/ocserv.default.conf ${OTHER_OPTS} $@'..."
+	exec ocserv -c "/etc/ocserv.default.conf" "${OTHER_OPTS}" "$@";
+fi
