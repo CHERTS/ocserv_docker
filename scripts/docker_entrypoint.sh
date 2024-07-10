@@ -104,5 +104,5 @@ if ! `test -c /dev/net/tun`; then
 fi
 
 # Run server
-echo "$(date) [info] Starting server..."
+echo "$(date) [info] Starting server using options '-c ${CONF_DIR}/ocserv.conf ${OTHER_OPTS} $@'..."
 exec ocserv -c "${CONF_DIR}/ocserv.conf" "${OTHER_OPTS}" "$@";
