@@ -7,6 +7,10 @@ OTHER_OPTS=${HC_OTHER_OPTS:-""}
 
 echo "$(date) [info] The directory with the configuration '${CONF_DIR}' will be used."
 
+if [ ! -d "${CONF_DIR}" ]; then
+	mkdir "${CONF_DIR}" >/dev/null 2>&1
+fi
+
 if [ ! -f "${CONF_DIR}/dh.pem" ]; then
 	echo "$(date) [info] Generating DH params file..."
 	certtool --generate-dh-params --outfile "${CONF_DIR}/dh.pem" >/dev/null 2>&1
