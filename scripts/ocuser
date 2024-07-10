@@ -29,7 +29,11 @@ case "$MODE" in
 esac
 
 if [ -f "${CONF_DIR}/ocpasswd" ]; then
-	ocpasswd -c "${CONF_DIR}/ocpasswd" ${FLAG} ${USER}
+	if [ -f "${CONF_DIR}/ocpasswd.tmp" ]; then
+		echo "WARNING: File '${CONF_DIR}/ocpasswd' is locked. Unlock..."
+		rm -f "${CONF_DIR}/ocpasswd.tmp" >/dev/null 2>&1
+	fi
+	ocpasswd -c "${CONF_DIR}/ocpasswd" ${FLAG} "${USER}"
 else
 	echo "ERROR: Password file '${CONF_DIR}/ocpasswd' not found."
 	exit 1
