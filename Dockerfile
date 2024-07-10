@@ -66,14 +66,14 @@ RUN buildDeps=" \
 COPY config/ocserv.conf $HC_WORKDIR/ocserv.conf
 COPY scripts/docker_entrypoint.sh /bin
 COPY scripts/ocuser /usr/local/sbin/ocuser
-RUN chmod 644 $HC_WORKDIR/ocserv.conf
 RUN set -x \
-        touch $HC_WORKDIR/ocpasswd \
-		&& chmod +x /bin/docker_entrypoint.sh \
-		&& chmod +x /usr/local/sbin/ocuser \
-		&& sed -i "s@tcp-port.*@tcp-port = $HC_TCP_PORT@g" $HC_WORKDIR/ocserv.conf \
-		&& sed -i "s@udp-port.*@udp-port = $HC_UDP_PORT@g" $HC_WORKDIR/ocserv.conf \
-		&& sed -i "s@\/etc\/ocserv@$HC_WORKDIR@g" $HC_WORKDIR/ocserv.conf
+	chmod 644 $HC_WORKDIR/ocserv.conf \
+    && touch $HC_WORKDIR/ocpasswd \
+	&& chmod +x /bin/docker_entrypoint.sh \
+	&& chmod +x /usr/local/sbin/ocuser \
+	&& sed -i "s@tcp-port.*@tcp-port = $HC_TCP_PORT@g" $HC_WORKDIR/ocserv.conf \
+	&& sed -i "s@udp-port.*@udp-port = $HC_UDP_PORT@g" $HC_WORKDIR/ocserv.conf \
+	&& sed -i "s@\/etc\/ocserv@$HC_WORKDIR@g" $HC_WORKDIR/ocserv.conf
 
 WORKDIR $HC_WORKDIR
 
