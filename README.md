@@ -176,7 +176,7 @@ docker-compose up -d
 
 ```bash
 git clone https://github.com/CHERTS/ocserv_docker.git
-cd examples/
+cd ocserv_docker/examples/
 docker-compose up -d
 docker-compose logs
 ```
