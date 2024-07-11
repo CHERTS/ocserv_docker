@@ -166,10 +166,9 @@ docker run -ti -d --rm --name ocserv \
 #### Start an instance as above but use docker compose
 
 ```bash
-mkdir ~/ocserv; cd ~/ocserv
-curl -s -L https://raw.githubusercontent.com/CHERTS/ocserv_docker/master/deploy/docker-compose.yaml -o docker-compose.yaml
-curl -s -L https://raw.githubusercontent.com/CHERTS/ocserv_docker/master/deploy/ocpasswd -o ocpasswd
--- Edit file docker-compose.yaml and ocpasswd after downloaads
+mkdir ~/ocserv
+curl -s -L https://raw.githubusercontent.com/CHERTS/ocserv_docker/master/deploy/docker-compose.yaml -o ~/ocserv/docker-compose.yaml
+cd ~/ocserv
 docker-compose up -d
 ```
 
