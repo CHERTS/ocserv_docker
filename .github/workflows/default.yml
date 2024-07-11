@@ -39,6 +39,9 @@ jobs:
       - name: Inspect image cherts/ocserv:${{ env.HC_VERSION }}
         run: |
           docker image inspect cherts/ocserv:${{ env.HC_VERSION }}
-      - name: Test image cherts/ocserv:${{ env.HC_VERSION }}
+      - name: Test image cherts/ocserv:${{ env.HC_VERSION }} [STAGE1]
         run: |
           docker run --rm -e HC_OTHER_OPTS=--version --name ocserv cherts/ocserv:${{ env.HC_VERSION }}
+      - name: Test image cherts/ocserv:${{ env.HC_VERSION }} [STAGE2]
+        run: |
+          docker run --rm -e HC_OTHER_OPTS=--version -e HC_NO_TEST_USER=1 -v ./deploy/ocpasswd:/etc/ocserv/ocpasswd --name ocserv cherts/ocserv:${{ env.HC_VERSION }}
