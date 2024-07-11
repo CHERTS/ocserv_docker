@@ -64,6 +64,7 @@ if [ -z "${NO_CREATE_SERVER_CERT}" ]; then
 		crl_signing_key
 		EOCA
 		echo "$(date) [info] Generating CA self signed certificate..."
+		echo "$(date) [info] DN: cn=${CA_CN},o=${CA_ORG}; EX_DAYS=${CA_DAYS}"
 		certtool --generate-self-signed --load-privkey "${CONF_DIR}/ca-key.pem" --template "${CONF_DIR}/ca.tmpl" --outfile "${CONF_DIR}/ca.pem" >/dev/null 2>&1
 		echo "$(date) [info] Generating server private key..."
 		certtool --generate-privkey --outfile "${CONF_DIR}/server-key.pem" >/dev/null 2>&1
@@ -76,6 +77,7 @@ if [ -z "${NO_CREATE_SERVER_CERT}" ]; then
 		tls_www_server
 		EOSRV
 		echo "$(date) [info] Generating server self signed certificate..."
+		echo "$(date) [info] DN: cn=${SRV_CN},o=${SRV_ORG}; EX_DAYS=${SRV_DAYS}"
 		certtool --generate-certificate --load-privkey "${CONF_DIR}/server-key.pem" --load-ca-certificate "${CONF_DIR}/ca.pem" --load-ca-privkey "${CONF_DIR}/ca-key.pem" --template "${CONF_DIR}/server.tmpl" --outfile "${CONF_DIR}/server-cert.pem" >/dev/null 2>&1
 		rm -rf "${CONF_DIR}/ca.tmpl" >/dev/null 2>&1
 		rm -rf "${CONF_DIR}/server.tmpl" >/dev/null 2>&1
