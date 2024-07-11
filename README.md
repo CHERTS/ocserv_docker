@@ -18,7 +18,7 @@ OpenConnect VPN server is an SSL VPN server that is secure, small, fast and conf
 - Uses the latest version of OpenConnect (v1.3.0);
 - Strong SSL/TLS ciphers are used (see tls-priorities options);
 - Alpine Linux base image is used;
-- Easy customization of the image is possible (changing the directory of the configuration file, TCP and UDP ports and additional options for running ocserv through the variables HC_WORKDIR, HC_TCP_PORT, HC_UDP_PORT and HC_OTHER_OPTS);
+- Easy customization of the image is possible (changing the directory of the configuration file, TCP and UDP ports and additional options for running ocserv through the variables);
 
 ## How to use this image
 
@@ -47,6 +47,14 @@ docker logs ocserv | grep "Creating test user"
 
 All the variables to this image is optional, which means you don't have to type in any environment variables, and you can have a OpenConnect Server out of the box! However, if you like to config the ocserv the way you like it, here's what you wanna know.
 
+`HC_WORKDIR`, this is the ocserv working directory, include configuration file ocserv.conf, DH params file (dh-params option), certificate files (server-cert and server-key options) and ocpasswd file (auth option).
+
+`HC_TCP_PORT`, this is the ocserv TCP port number (tcp-port option).
+
+`HC_UDP_PORT`, this is the ocserv UDP port number (tcp-port option).
+
+`HC_OTHER_OPTS`, this is the ocserv comand line options.
+
 `HC_CA_CN`, this is the common name used to generate the CA (Certificate Authority).
 
 `HC_CA_ORG`, this is the organization name used to generate the CA.
@@ -65,18 +73,13 @@ All the variables to this image is optional, which means you don't have to type 
 
 `HC_NO_CREATE_SERVER_CERT`, while this variable is set to not empty, the server certificate file will not be created. You have to create your own server certificate file and set path to file into config ocserv (server-cert and server-key option). The default value is to generate server certificate file automaticaly if not exist.
 
-`HC_WORKDIR`, this is the ocserv working directory, include configuration file ocserv.conf, DH params file (dh-params option), certificate files (server-cert and server-key options) and ocpasswd file (auth option), default /etc/ocserv
-
-`HC_TCP_PORT`, this is the ocserv TCP port number (tcp-port option), default 443
-
-`HC_UDP_PORT`, this is the ocserv UDP port number (tcp-port option), default 443
-
-`HC_OTHER_OPTS`, this is the ocserv comand line options, default -f and -c
-
 The default values of the above environment variables:
 
 |   Variable      |     Default     |
 |:---------------:|:---------------:|
+|  **HC_WORKDIR** |   /etc/ocserv   |
+|  **HC_TCP_PORT**|       443       |
+|  **HC_UDP_PORT**|       443       |
 |  **HC_CA_CN**   |      VPN CA     |
 |  **HC_CA_ORG**  | My Organization |
 | **HC_CA_DAYS**  |       9999      |
@@ -92,7 +95,7 @@ The default values of the above environment variables:
 docker run -ti -d --rm --name ocserv \
     --privileged \
     -p 443:443 -p 443:443/udp \
-    cherts/ocserv:latest                                                                                                                                            
+    cherts/ocserv:latest
 ```
 
 This will start an instance with the a test user named `test` and generated random password.
@@ -107,7 +110,7 @@ docker logs ocserv | grep "Creating test user"
 ```bash
 docker run -ti -d --rm --name ocserv \
     --privileged \
-    -p 443:443 -p 443:443/udp \
+    -p 443:443/tcp -p 443:443/udp \
     -e HC_SRV_CN=vpn.myorg.com \
     -e HC_SRV_ORG="My Org" \
     -e HC_SRV_DAYS=365 \
