@@ -115,8 +115,8 @@ if [ -f "${CONF_DIR}/ocserv.conf" ]; then
 else
 	echo "$(date) [warning] Configuration file '${CONF_DIR}/ocserv.conf' not found."
 	sed -i "s@\/etc\/ocserv@${CONF_DIR}@g" /etc/ocserv.default.conf
-	sed -i "s@tcp-port.*@tcp-port = ${TCP_PORT}}@g" /etc/ocserv.default.conf
-	sed -i "s@udp-port.*@udp-port = ${UDP_PORT}}@g" /etc/ocserv.default.conf
+	sed -i "s@tcp-port.*@tcp-port = ${TCP_PORT}@g" /etc/ocserv.default.conf
+	sed -i "s@udp-port.*@udp-port = ${UDP_PORT}@g" /etc/ocserv.default.conf
 	echo "$(date) [info] Starting server using options '-c /etc/ocserv.default.conf -f ${OTHER_OPTS}'..."
 	exec ocserv -c "/etc/ocserv.default.conf" -f ${OTHER_OPTS};
 fi
