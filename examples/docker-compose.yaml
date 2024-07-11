@@ -6,8 +6,12 @@ services:
     privileged: true
     hostname: vpn.myorg.com
     ports:
-      - 443:443/udp
-      - 443:443/tcp
+      - 8443:8443/udp
+      - 8443:8443/tcp
+    volumes:
+      - type: bind
+        source: ${PWD}/config
+        target: /etc/ocserv
     environment:
       - HC_CA_CN=My CA
       - HC_CA_ORG=My Corp
@@ -15,10 +19,6 @@ services:
       - HC_SRV_CN=vpn.myorg.com
       - HC_SRV_ORG=My Org
       - HC_SRV_DAYS=365
-#      - HC_NO_TEST_USER=1
-#      - HC_NO_CREATE_DH_PARAMS=1
-#      - HC_NO_CREATE_SERVER_CERT=1
-#      - HC_TCP_PORT=8443
-#      - HC_UDP_PORT=8443
-#      - HC_WORKDIR=/opt/ocserv
-#      - HC_OTHER_OPTS=-d 9
+      - HC_NO_TEST_USER=1
+      - HC_TCP_PORT=8443
+      - HC_UDP_PORT=8443

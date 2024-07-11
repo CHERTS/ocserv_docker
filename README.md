@@ -163,15 +163,28 @@ docker run -ti -d --rm --name ocserv \
 
 **WARNING:** The ocserv requires the ocpasswd file to start, if `HC_NO_TEST_USER=1` is provided, there will be no ocpasswd created, which will stop the container immediately after start it. You must specific a ocpasswd file pointed to `/etc/ocserv/ocpasswd` by using the volume argument `-v` by docker as demonstrated above.
 
-#### Start an instance as above but use docker compose
+#### Start an instance but use docker compose (simple configuration)
 
 ```bash
-mkdir ~/ocserv; cd ~/ocserv
-curl -s -L https://raw.githubusercontent.com/CHERTS/ocserv_docker/master/deploy/docker-compose.yaml -o docker-compose.yaml
-curl -s -L https://raw.githubusercontent.com/CHERTS/ocserv_docker/master/deploy/ocpasswd -o ocpasswd
--- Edit file docker-compose.yaml and ocpasswd after downloaads
+mkdir ~/ocserv
+curl -s -L https://raw.githubusercontent.com/CHERTS/ocserv_docker/master/deploy/docker-compose.yaml -o ~/ocserv/docker-compose.yaml
+cd ~/ocserv
 docker-compose up -d
 ```
+
+#### Start an instance but use docker compose (advanced configuration)
+
+```bash
+git clone https://github.com/CHERTS/ocserv_docker.git
+cd examples/
+docker-compose up -d
+docker-compose logs
+```
+
+A container with ocserv will be launched, accepting connections on port 8443, and the `config` directory will be mounted in the container.
+When the container starts, self-signed certificates will be generated.
+There is one user `admin` in the `config/ocpasswd` file (password `admin`).
+You can edit the configuration in the `docker-compose.yaml` and `config/ocserv.conf` files for your tasks.
 
 ### User operations
 

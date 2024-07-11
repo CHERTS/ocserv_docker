@@ -1,0 +1,6 @@
+# General MacOS file
+.DS_Store
+.AppleDouble
+.LSOverride
+# Project
+examples/config/*.pem
