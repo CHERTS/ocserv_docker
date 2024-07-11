@@ -6,6 +6,12 @@ UDP_PORT=${HC_UDP_PORT:-"443"}
 OTHER_OPTS=${HC_OTHER_OPTS:-""}
 NO_CREATE_DH_PARAMS=${HC_NO_CREATE_DH_PARAMS:-""}
 NO_CREATE_SERVER_CERT=${HC_NO_CREATE_SERVER_CERT:-""}
+CA_CN=${HC_CA_CN:-"VPN CA"}
+CA_ORG=${HC_CA_ORG:-"My Organization"}
+CA_DAYS=${HC_CA_DAYS:-9999}
+SRV_CN=${HC_SRV_CN:-"www.example.com"}
+SRV_ORG=${HC_SRV_ORG:-"My Company"}
+SRV_DAYS=${HC_SRV_DAYS:-9999}
 NO_TEST_USER=${HC_NO_TEST_USER:-""}
 
 echo "$(date) [info] The directory with the configuration '${CONF_DIR}' will be used."
@@ -26,32 +32,32 @@ if [ -z "${NO_CREATE_SERVER_CERT}" ]; then
 	if [ ! -f "${CONF_DIR}/server-key.pem" ] || [ ! -f "${CONF_DIR}/server-cert.pem" ]; then
 		echo "$(date) [info] No certificates were found, creating them from provided or default values"
 		# Check environment variables
-		if [ -z "$CA_CN" ]; then
+		if [ -z "${CA_CN}" ]; then
 			CA_CN="VPN CA"
 		fi
-		if [ -z "$CA_ORG" ]; then
+		if [ -z "${CA_ORG}" ]; then
 			CA_ORG="My Organization"
 		fi
-		if [ -z "$CA_DAYS" ]; then
+		if [ -z "${CA_DAYS}" ]; then
 			CA_DAYS=9999
 		fi
-		if [ -z "$SRV_CN" ]; then
+		if [ -z "${SRV_CN}" ]; then
 			SRV_CN="www.example.com"
 		fi
-		if [ -z "$SRV_ORG" ]; then
+		if [ -z "${SRV_ORG}" ]; then
 			SRV_ORG="My Company"
 		fi
-		if [ -z "$SRV_DAYS" ]; then
+		if [ -z "${SRV_DAYS}" ]; then
 			SRV_DAYS=9999
 		fi
 		echo "$(date) [info] Generating CA private key..."
 		# No certification found, generate one
 		certtool --generate-privkey --outfile "${CONF_DIR}/ca-key.pem" >/dev/null 2>&1
 		cat > "${CONF_DIR}/ca.tmpl" <<-EOCA
-		cn = "$CA_CN"
-		organization = "$CA_ORG"
+		cn = "${CA_CN}"
+		organization = "${CA_ORG}"
 		serial = 1
-		expiration_days = $CA_DAYS
+		expiration_days = ${CA_DAYS}
 		ca
 		signing_key
 		cert_signing_key
@@ -62,9 +68,9 @@ if [ -z "${NO_CREATE_SERVER_CERT}" ]; then
 		echo "$(date) [info] Generating server private key..."
 		certtool --generate-privkey --outfile "${CONF_DIR}/server-key.pem" >/dev/null 2>&1
 		cat > "${CONF_DIR}/server.tmpl" <<-EOSRV
-		cn = "$SRV_CN"
-		organization = "$SRV_ORG"
-		expiration_days = $SRV_DAYS
+		cn = "${SRV_CN}"
+		organization = "${SRV_ORG}"
+		expiration_days = ${SRV_DAYS}
 		signing_key
 		encryption_key
 		tls_www_server
