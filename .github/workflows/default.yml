@@ -50,4 +50,4 @@ jobs:
           docker run --rm -e HC_OTHER_OPTS=-t -e HC_WORKDIR=/opt/ocserv --name ocserv cherts/ocserv:${{ env.HC_VERSION }}
       - name: Test image cherts/ocserv:${{ env.HC_VERSION }} [STAGE4]
         run: |
-          docker run --rm-e HC_OTHER_OPTS=-t -e HC_WORKDIR=/opt/ocserv -e HC_TCP_PORT=8443 -e HC_UDP_PORT=8443 -p 8443:8443/udp -p 8443:8443/tcp --name ocserv cherts/ocserv:${{ env.HC_VERSION }}
+          docker run --rm -e HC_OTHER_OPTS=-t -e HC_WORKDIR=/opt/ocserv -e HC_TCP_PORT=8443 -e HC_UDP_PORT=8443 -p 8443:8443/udp -p 8443:8443/tcp --name ocserv cherts/ocserv:${{ env.HC_VERSION }}
