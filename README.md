@@ -200,6 +200,16 @@ The above command will delete the default user `test`, if you start the instance
 
 Change password is exactly the same command as add user, please refer to the command mentioned above.
 
+#### View ocserv status
+
+Use occtl in contaner for show status
+
+```bash
+docker exec -ti ocserv occtl show status
+```
+
+You can also use other commands in the occtl utility.
+
 ## Build custom image
 
 ```
