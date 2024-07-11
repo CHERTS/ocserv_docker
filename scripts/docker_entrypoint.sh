@@ -30,7 +30,7 @@ fi
 
 if [ -z "${NO_CREATE_SERVER_CERT}" ]; then
 	if [ ! -f "${CONF_DIR}/server-key.pem" ] || [ ! -f "${CONF_DIR}/server-cert.pem" ]; then
-		echo "$(date) [info] No certificates were found, creating them from provided or default values"
+		echo "$(date) [info] No certificates were found, creating them from provided or default values."
 		# Check environment variables
 		if [ -z "${CA_CN}" ]; then
 			CA_CN="VPN CA"
