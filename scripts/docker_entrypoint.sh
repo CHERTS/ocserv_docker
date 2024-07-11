@@ -95,10 +95,10 @@ fi
 echo "$(date) [info] Enable ipv4 forward..."
 sysctl -w net.ipv4.ip_forward=1 >/dev/null 2>&1
 
-echo "$(date) [info] Enable NAT forwarding, TCP port: $TCP_PORT, UDP port: $UDP_PORT..."
+echo "$(date) [info] Enable NAT forwarding, TCP port: ${TCP_PORT}, UDP port: ${UDP_PORT}..."
 iptables -t nat -A POSTROUTING -j MASQUERADE >/dev/null 2>&1
-iptables -A INPUT -p tcp --dport $TCP_PORT -j ACCEPT >/dev/null 2>&1
-iptables -A INPUT -p udp --dport $UDP_PORT -j ACCEPT >/dev/null 2>&1
+iptables -A INPUT -p tcp --dport ${TCP_PORT} -j ACCEPT >/dev/null 2>&1
+iptables -A INPUT -p udp --dport ${UDP_PORT} -j ACCEPT >/dev/null 2>&1
 iptables -A FORWARD -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu >/dev/null 2>&1
 
 if ! `test -c /dev/net/tun`; then
@@ -114,6 +114,9 @@ if [ -f "${CONF_DIR}/ocserv.conf" ]; then
 	exec ocserv -c "${CONF_DIR}/ocserv.conf" -f ${OTHER_OPTS};
 else
 	echo "$(date) [warning] Configuration file '${CONF_DIR}/ocserv.conf' not found."
+	sed -i "s@\/etc\/ocserv@${CONF_DIR}@g" /etc/ocserv.default.conf
+	sed -i "s@tcp-port.*@tcp-port = ${TCP_PORT}}@g" /etc/ocserv.default.conf
+	sed -i "s@udp-port.*@udp-port = ${UDP_PORT}}@g" /etc/ocserv.default.conf
 	echo "$(date) [info] Starting server using options '-c /etc/ocserv.default.conf -f ${OTHER_OPTS}'..."
 	exec ocserv -c "/etc/ocserv.default.conf" -f ${OTHER_OPTS};
 fi
