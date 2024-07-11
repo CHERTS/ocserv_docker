@@ -65,6 +65,14 @@ All the variables to this image is optional, which means you don't have to type 
 
 `HC_NO_CREATE_SERVER_CERT`, while this variable is set to not empty, the server certificate file will not be created. You have to create your own server certificate file and set path to file into config ocserv (server-cert and server-key option). The default value is to generate server certificate file automaticaly if not exist.
 
+`HC_WORKDIR`, this is the ocserv working directory, include configuration file ocserv.conf, DH params file (dh-params option), certificate files (server-cert and server-key options) and ocpasswd file (auth option), default /etc/ocserv
+
+`HC_TCP_PORT`, this is the ocserv TCP port number (tcp-port option), default 443
+
+`HC_UDP_PORT`, this is the ocserv UDP port number (tcp-port option), default 443
+
+`HC_OTHER_OPTS`, this is the ocserv comand line options, default -f and -c
+
 The default values of the above environment variables:
 
 |   Variable   |     Default     |
