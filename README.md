@@ -47,17 +47,17 @@ docker logs ocserv | grep "Creating test user"
 
 All the variables to this image is optional, which means you don't have to type in any environment variables, and you can have a OpenConnect Server out of the box! However, if you like to config the ocserv the way you like it, here's what you wanna know.
 
-`CA_CN`, this is the common name used to generate the CA (Certificate Authority).
+`HC_CA_CN`, this is the common name used to generate the CA (Certificate Authority).
 
-`CA_ORG`, this is the organization name used to generate the CA.
+`HC_CA_ORG`, this is the organization name used to generate the CA.
 
-`CA_DAYS`, this is the expiration days used to generate the CA.
+`HC_CA_DAYS`, this is the expiration days used to generate the CA.
 
-`SRV_CN`, this is the common name used to generate the server certification.
+`HC_SRV_CN`, this is the common name used to generate the server certification.
 
-`SRV_ORG`, this is the organization name used to generate the server certification.
+`HC_SRV_ORG`, this is the organization name used to generate the server certification.
 
-`SRV_DAYS`, this is the expiration days used to generate the server certification.
+`HC_SRV_DAYS`, this is the expiration days used to generate the server certification.
 
 `HC_NO_TEST_USER`, while this variable is set to not empty, the `test` user will not be created. You have to create your own user with password. The default value is to create `test` user with random password.
 
@@ -75,14 +75,14 @@ All the variables to this image is optional, which means you don't have to type 
 
 The default values of the above environment variables:
 
-|   Variable   |     Default     |
-|:------------:|:---------------:|
-|  **CA_CN**   |      VPN CA     |
-|  **CA_ORG**  | My Organization |
-| **CA_DAYS**  |       9999      |
-|  **SRV_CN**  | www.example.com |
-| **SRV_ORG**  |    My Company   |
-| **SRV_DAYS** |       9999      |
+|   Variable      |     Default     |
+|:---------------:|:---------------:|
+|  **HC_CA_CN**   |      VPN CA     |
+|  **HC_CA_ORG**  | My Organization |
+| **HC_CA_DAYS**  |       9999      |
+|  **HC_SRV_CN**  | www.example.com |
+| **HC_SRV_ORG**  |    My Company   |
+| **HC_SRV_DAYS** |       9999      |
 
 ### Running examples
 
@@ -108,9 +108,9 @@ docker logs ocserv | grep "Creating test user"
 docker run -ti -d --rm --name ocserv \
     --privileged \
     -p 443:443 -p 443:443/udp \
-    -e SRV_CN=vpn.myorg.com \
-    -e SRV_ORG="My Org" \
-    -e SRV_DAYS=365 \
+    -e HC_SRV_CN=vpn.myorg.com \
+    -e HC_SRV_ORG="My Org" \
+    -e HC_SRV_DAYS=365 \
     cherts/ocserv:latest
 ```
 
@@ -120,9 +120,9 @@ docker run -ti -d --rm --name ocserv \
 docker run -ti -d --rm --name ocserv \
     --privileged \
     -p 443:443 -p 443:443/udp \
-    -e CA_CN="My CA" \
-    -e CA_ORG="My Corp" \
-    -e CA_DAYS=3650 \
+    -e HC_CA_CN="My CA" \
+    -e HC_CA_ORG="My Corp" \
+    -e HC_CA_DAYS=3650 \
     cherts/ocserv:latest
 ```
 
@@ -132,12 +132,12 @@ A totally customized instance with both CA and server certification
 docker run -ti -d --rm --name ocserv \
     --privileged \
     -p 443:443 -p 443:443/udp \
-    -e CA_CN="My CA" \
-    -e CA_ORG="My Corp" \
-    -e CA_DAYS=3650 \
-    -e SRV_CN=vpn.myorg.com \
-    -e SRV_ORG="My Org" \
-    -e SRV_DAYS=365 \
+    -e HC_CA_CN="My CA" \
+    -e HC_CA_ORG="My Corp" \
+    -e HC_CA_DAYS=3650 \
+    -e HC_SRV_CN=vpn.myorg.com \
+    -e HC_SRV_ORG="My Org" \
+    -e HC_SRV_DAYS=365 \
     cherts/ocserv:latest
 ```
 
@@ -147,12 +147,12 @@ docker run -ti -d --rm --name ocserv \
 docker run -ti -d --rm --name ocserv \
     --privileged \
     -p 443:443 -p 443:443/udp \
-    -e CA_CN="My CA" \
-    -e CA_ORG="My Corp" \
-    -e CA_DAYS=3650 \
-    -e SRV_CN=vpn.myorg.com \
-    -e SRV_ORG="My Org" \
-    -e SRV_DAYS=365 \
+    -e HC_CA_CN="My CA" \
+    -e HC_CA_ORG="My Corp" \
+    -e HC_CA_DAYS=3650 \
+    -e HC_SRV_CN=vpn.myorg.com \
+    -e HC_SRV_ORG="My Org" \
+    -e HC_SRV_DAYS=365 \
     -e HC_NO_TEST_USER=1 \
     -v /some/path/to/ocpasswd:/etc/ocserv/ocpasswd \
     cherts/ocserv:latest
